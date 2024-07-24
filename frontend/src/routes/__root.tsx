@@ -1,82 +1,74 @@
-import * as React from "react";
+// import * as React from "react";
 import {
   Link,
   Outlet,
   createRootRouteWithContext,
-  useRouterState,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-// import { Spinner } from "../components/Spinner";
-import type { QueryClient } from "@tanstack/react-query";
+import { useQuery, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-// import type { Auth } from "../utils/auth";
+import { fetchCompanies } from "../api/companies";
 
-// function RouterSpinner() {
-//   const isLoading = useRouterState({ select: (s) => s.status === "pending" });
-//   return <Spinner show={isLoading} />;
-// }
+const NotFoundComponent = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <h1 className="text-3xl">Page Not Found</h1>
+    <Link to="/" className="text-blue-700">
+      Go back to Home
+    </Link>
+  </div>
+);
 
-export const Route = createRootRouteWithContext<{
-  // auth: Auth;
-  queryClient: QueryClient;
-}>()({
-  component: RootComponent,
-});
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
+  {
+    component: RootComponent,
+    notFoundComponent: NotFoundComponent,
+  }
+);
 
 function RootComponent() {
+  const { data, error, isLoading } = useQuery<{ id: number; name: string }[]>({
+    queryKey: ["companies"],
+    queryFn: fetchCompanies,
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading companies.</div>;
+  }
+
+  const dataArray = data?.map((company) => {
+    const { id, name } = company;
+    return [id, name];
+  });
+
   return (
     <>
-      <div className={`min-h-screen flex flex-col`}>
-        <div className={`flex items-center border-b gap-2`}>
-          <h1 className={`text-3xl p-2`}>Kitchen Sink</h1>
-          {/* Show a global spinner when the router is transitioning */}
-          <div className={`text-3xl`}>
-            spenner
-            {/* <RouterSpinner /> */}
-          </div>
+      <div className="min-h-screen flex flex-col">
+        <div className="flex items-center border-b gap-2">
+          <h1 className="text-3xl p-2">All Companies</h1>
         </div>
-        <div className={`flex-1 flex`}>
-          <div className={`divide-y w-56`}>
-            {(
-              [
-                ["/", "Home"],
-                ["/dashboard", "Dashboard"],
-                ["/expensive", "Expensive"],
-                ["/layout-a", "Layout A"],
-                ["/layout-b", "Layout B"],
-                ["/profile", "Profile"],
-                ["/login", "Login"],
-              ] as const
-            ).map(([to, label]) => {
-              return (
-                <div key={to}>
-                  <Link
-                    to={to}
-                    activeOptions={
-                      {
-                        // If the route points to the root of it's parent,
-                        // make sure it's only active if it's exact
-                        // exact: to === '.',
-                      }
-                    }
-                    preload="intent"
-                    className={`block py-2 px-3 text-blue-700`}
-                    // Make "active" links bold
-                    activeProps={{ className: `font-bold` }}
-                  >
-                    {label}
-                  </Link>
-                </div>
-              );
-            })}
+        <div className="flex-1 flex">
+          <div className="divide-y w-56">
+            {dataArray?.map(([id, name]) => (
+              <div key={id}>
+                <Link
+                  to={`/${encodeURIComponent(name)}`}
+                  className="block py-2 px-3 text-blue-700"
+                >
+                  {name}
+                </Link>
+              </div>
+            ))}
           </div>
-          <div className={`flex-1 border-l`}>
+          <div className="flex-1 border-l">
             <Outlet />
           </div>
         </div>
       </div>
-      <ReactQueryDevtools buttonPosition="top-right" />
+      <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
       <TanStackRouterDevtools position="bottom-right" />
     </>
   );
