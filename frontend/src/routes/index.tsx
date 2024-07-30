@@ -1,9 +1,11 @@
 import React from "react";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useNavigate } from "@tanstack/react-router";
+import { Link, Outlet } from "@tanstack/react-router";
+// import { useQv }
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-export const Route = createLazyFileRoute("/")({
+export const Route = createFileRoute("/")({
   component: Index,
 });
 
@@ -52,32 +54,34 @@ function Index() {
   if (error) return <div>Error loading companies</div>;
 
   return (
-    <div className="p-5 flex">
-      <div>
-        <h3 className="">All companies</h3>
-        <ul>
-          {data &&
-            data.map((company: Company) => (
-              <li key={company.id}>{company.name}</li>
-            ))}
-        </ul>
+    <>
+      <div className="flex items-center border-b">
+        <h2 className="text-xl p-2">Dashboard</h2>
       </div>
-      <div>
-        {/* <input
-          type="text"
-          placeholder="Company name"
-          className="ring-1 ring-inset ring-gray-300 rounded p-1"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        /> */}
-        <button
-          className="bg-blue-500 text-white font-bold py-1 px-1 rounded"
-          onClick={() => addCompanyMutation.mutate({ name })}
-        >
-          Create a company
-        </button>
+      <div className="flex flex-wrap divide-x">
+        {(
+          [
+            ["", "Home", true],
+            ["/customers", "Customers"],
+            ["/users", "Users"],
+          ] as const
+        ).map(([to, label, exact]) => {
+          return (
+            <Link
+              key={to}
+              to={`/${to}`}
+              activeOptions={{ exact }}
+              activeProps={{ className: `font-bold` }}
+              className="p-2"
+            >
+              {label}
+            </Link>
+          );
+        })}
       </div>
-    </div>
+      <hr />
+      <Outlet />
+    </>
   );
 }
 

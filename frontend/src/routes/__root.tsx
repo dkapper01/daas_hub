@@ -47,15 +47,19 @@ function RootComponent() {
   return (
     <>
       <div className="min-h-screen flex flex-col">
-        <div className="flex items-center border-b gap-2">
+        <div className="flex items-center justify-between border-b gap-2">
           <h1 className="text-3xl p-2">All Companies</h1>
+          <Link to="/create" className="text-blue-700">
+            New Company
+          </Link>
         </div>
+
         <div className="flex-1 flex">
           <div className="divide-y w-56">
             {dataArray?.map(([id, name]) => (
               <div key={id}>
                 <Link
-                  to={`/${encodeURIComponent(name)}`}
+                  to={`/${encodeURIComponent("companies")}/${id}`}
                   className="block py-2 px-3 text-blue-700"
                 >
                   {name}

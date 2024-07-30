@@ -47,3 +47,13 @@ app.post("/companies", async (req, res) => {
   });
   res.json(company);
 });
+
+app.get("/companies/:id", async (req, res) => {
+  const { id } = req.params;
+  console.log("GET /companies/:id", id);
+
+  const company = await prisma.company.findUnique({
+    where: { id: parseInt(id) },
+  });
+  res.json(company);
+});
