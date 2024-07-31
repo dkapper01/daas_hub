@@ -74,7 +74,6 @@ function RootComponent() {
           </div>
         </div>
       </div>
-      <Outlet />
       <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
       <TanStackRouterDevtools position="bottom-right" />
     </>
