@@ -57,3 +57,37 @@ app.get("/companies/:id", async (req, res) => {
   });
   res.json(company);
 });
+
+// Add route for adding a row
+app.post("/companies/:id/rows", async (req, res) => {
+  const { id } = req.params;
+  const { name, url } = req.body;
+  console.log("POST /companies/:id/rows", id, name, url);
+
+  const row = await prisma.row.create({
+    data: {
+      name,
+      url,
+      companyId: parseInt(id),
+    },
+  });
+  res.json(row);
+});
+
+// Add route for deleting a row
+app.delete("/rows/:rowId", async (req, res) => {
+  const { rowId } = req.params;
+  console.log("DELETE /rows/:rowId", rowId);
+
+  const deletedRow = await prisma.row.delete({
+    where: { id: parseInt(rowId) },
+  });
+  res.json(deletedRow);
+});
+
+// Add route for getting all rows
+app.get("/rows", async (req, res) => {
+  console.log("GET /rows");
+  const rows = await prisma.row.findMany();
+  res.json(rows);
+});
