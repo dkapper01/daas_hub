@@ -48,7 +48,9 @@ function RootComponent() {
     <>
       <div className="min-h-screen flex flex-col">
         <div className="flex items-center justify-between border-b gap-2">
-          <h1 className="text-3xl p-2">All Companies</h1>
+          <h1 className="text-3xl p-2">
+            <Link to="/">All Companies</Link>
+          </h1>
           <Link to="/create" className="text-blue-700">
             New Company
           </Link>
@@ -59,7 +61,7 @@ function RootComponent() {
             {dataArray?.map(([id, name]) => (
               <div key={id}>
                 <Link
-                  to={`/${encodeURIComponent("companies")}/${id}`}
+                  to={`/companies/${id}`}
                   className="block py-2 px-3 text-blue-700"
                 >
                   {name}
@@ -72,6 +74,7 @@ function RootComponent() {
           </div>
         </div>
       </div>
+      <Outlet />
       <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
       <TanStackRouterDevtools position="bottom-right" />
     </>

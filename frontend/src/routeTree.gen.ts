@@ -13,14 +13,14 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as DashbordImport } from './routes/dashbord'
 import { Route as CreateImport } from './routes/create'
 import { Route as CompaniesImport } from './routes/companies'
 import { Route as layoutImport } from './routes/__layout'
 import { Route as IndexImport } from './routes/index'
 import { Route as CompaniesIndexImport } from './routes/companies.index'
-import { Route as IndexStatsImport } from './routes/index.stats'
-import { Route as IndexCustomersImport } from './routes/index.customers'
 import { Route as CompaniesIdImport } from './routes/companies.$id'
+import { Route as CampaniesIdNewImport } from './routes/campanies.$id.new'
 
 // Create Virtual Routes
 
@@ -32,6 +32,11 @@ const AboutLazyRoute = AboutLazyImport.update({
   path: '/about',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/about.lazy').then((d) => d.Route))
+
+const DashbordRoute = DashbordImport.update({
+  path: '/dashbord',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const CreateRoute = CreateImport.update({
   path: '/create',
@@ -58,19 +63,14 @@ const CompaniesIndexRoute = CompaniesIndexImport.update({
   getParentRoute: () => CompaniesRoute,
 } as any)
 
-const IndexStatsRoute = IndexStatsImport.update({
-  path: '/index/stats',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const IndexCustomersRoute = IndexCustomersImport.update({
-  path: '/index/customers',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const CompaniesIdRoute = CompaniesIdImport.update({
   path: '/$id',
   getParentRoute: () => CompaniesRoute,
+} as any)
+
+const CampaniesIdNewRoute = CampaniesIdNewImport.update({
+  path: '/campanies/$id/new',
+  getParentRoute: () => rootRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -105,6 +105,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreateImport
       parentRoute: typeof rootRoute
     }
+    '/dashbord': {
+      id: '/dashbord'
+      path: '/dashbord'
+      fullPath: '/dashbord'
+      preLoaderRoute: typeof DashbordImport
+      parentRoute: typeof rootRoute
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -119,26 +126,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CompaniesIdImport
       parentRoute: typeof CompaniesImport
     }
-    '/index/customers': {
-      id: '/index/customers'
-      path: '/index/customers'
-      fullPath: '/index/customers'
-      preLoaderRoute: typeof IndexCustomersImport
-      parentRoute: typeof rootRoute
-    }
-    '/index/stats': {
-      id: '/index/stats'
-      path: '/index/stats'
-      fullPath: '/index/stats'
-      preLoaderRoute: typeof IndexStatsImport
-      parentRoute: typeof rootRoute
-    }
     '/companies/': {
       id: '/companies/'
       path: '/'
       fullPath: '/companies/'
       preLoaderRoute: typeof CompaniesIndexImport
       parentRoute: typeof CompaniesImport
+    }
+    '/campanies/$id/new': {
+      id: '/campanies/$id/new'
+      path: '/campanies/$id/new'
+      fullPath: '/campanies/$id/new'
+      preLoaderRoute: typeof CampaniesIdNewImport
+      parentRoute: typeof rootRoute
     }
   }
 }
@@ -152,9 +152,9 @@ export const routeTree = rootRoute.addChildren({
     CompaniesIndexRoute,
   }),
   CreateRoute,
+  DashbordRoute,
   AboutLazyRoute,
-  IndexCustomersRoute,
-  IndexStatsRoute,
+  CampaniesIdNewRoute,
 })
 
 /* prettier-ignore-end */
@@ -169,9 +169,9 @@ export const routeTree = rootRoute.addChildren({
         "/__layout",
         "/companies",
         "/create",
+        "/dashbord",
         "/about",
-        "/index/customers",
-        "/index/stats"
+        "/campanies/$id/new"
       ]
     },
     "/": {
@@ -190,6 +190,9 @@ export const routeTree = rootRoute.addChildren({
     "/create": {
       "filePath": "create.tsx"
     },
+    "/dashbord": {
+      "filePath": "dashbord.tsx"
+    },
     "/about": {
       "filePath": "about.lazy.tsx"
     },
@@ -197,15 +200,12 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "companies.$id.tsx",
       "parent": "/companies"
     },
-    "/index/customers": {
-      "filePath": "index.customers.tsx"
-    },
-    "/index/stats": {
-      "filePath": "index.stats.tsx"
-    },
     "/companies/": {
       "filePath": "companies.index.tsx",
       "parent": "/companies"
+    },
+    "/campanies/$id/new": {
+      "filePath": "campanies.$id.new.tsx"
     }
   }
 }

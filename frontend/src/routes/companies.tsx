@@ -1,17 +1,40 @@
-import { Link, Outlet, createFileRoute } from "@tanstack/react-router";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+  Link,
+  Outlet,
+  createFileRoute,
+  useParams,
+} from "@tanstack/react-router";
 
 export const Route = createFileRoute("/companies")({
-  //   loader: ({ context: { queryClient } }) => {
-  //     console.log("companies route loader", queryClient);
-  //   },
   component: CompaniesComponent,
 });
 
 function CompaniesComponent() {
+  const { id } = useParams({ strict: false });
+
   return (
     <>
-      companies component
+      <div className="flex flex-wrap divide-x">
+        {(
+          [
+            [`/companies/${id}`, "Data", true],
+            [`/companies/${id}/new`, "New"],
+          ] as const
+        ).map(([to, label, exact]) => {
+          return (
+            <Link
+              key={to}
+              to={`/${to}`}
+              activeOptions={{ exact }}
+              activeProps={{ className: `font-bold` }}
+              className="p-2"
+            >
+              {label}
+            </Link>
+          );
+        })}
+      </div>
+      <hr />
       <Outlet />
     </>
   );

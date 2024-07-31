@@ -61,9 +61,9 @@ function Index() {
       <div className="flex flex-wrap divide-x">
         {(
           [
-            ["", "Home", true],
-            ["/customers", "Customers"],
-            ["/users", "Users"],
+            ["/dashboard", "Home", true],
+            ["/dashboard/customers", "Customers"],
+            ["/dashboard/users", "Users"],
           ] as const
         ).map(([to, label, exact]) => {
           return (
