@@ -20,7 +20,9 @@ import { Route as layoutImport } from './routes/__layout'
 import { Route as IndexImport } from './routes/index'
 import { Route as CompaniesIndexImport } from './routes/companies.index'
 import { Route as CompaniesIdImport } from './routes/companies.$id'
-import { Route as CampaniesIdNewImport } from './routes/campanies.$id.new'
+import { Route as CampaniesNewImport } from './routes/campanies.new'
+import { Route as CompaniesNewIndexImport } from './routes/companies.new.index'
+import { Route as CompaniesNewIdImport } from './routes/companies.new.$id'
 
 // Create Virtual Routes
 
@@ -68,9 +70,19 @@ const CompaniesIdRoute = CompaniesIdImport.update({
   getParentRoute: () => CompaniesRoute,
 } as any)
 
-const CampaniesIdNewRoute = CampaniesIdNewImport.update({
-  path: '/campanies/$id/new',
+const CampaniesNewRoute = CampaniesNewImport.update({
+  path: '/campanies/new',
   getParentRoute: () => rootRoute,
+} as any)
+
+const CompaniesNewIndexRoute = CompaniesNewIndexImport.update({
+  path: '/new/',
+  getParentRoute: () => CompaniesRoute,
+} as any)
+
+const CompaniesNewIdRoute = CompaniesNewIdImport.update({
+  path: '/new/$id',
+  getParentRoute: () => CompaniesRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -119,6 +131,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutLazyImport
       parentRoute: typeof rootRoute
     }
+    '/campanies/new': {
+      id: '/campanies/new'
+      path: '/campanies/new'
+      fullPath: '/campanies/new'
+      preLoaderRoute: typeof CampaniesNewImport
+      parentRoute: typeof rootRoute
+    }
     '/companies/$id': {
       id: '/companies/$id'
       path: '/$id'
@@ -133,12 +152,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CompaniesIndexImport
       parentRoute: typeof CompaniesImport
     }
-    '/campanies/$id/new': {
-      id: '/campanies/$id/new'
-      path: '/campanies/$id/new'
-      fullPath: '/campanies/$id/new'
-      preLoaderRoute: typeof CampaniesIdNewImport
-      parentRoute: typeof rootRoute
+    '/companies/new/$id': {
+      id: '/companies/new/$id'
+      path: '/new/$id'
+      fullPath: '/companies/new/$id'
+      preLoaderRoute: typeof CompaniesNewIdImport
+      parentRoute: typeof CompaniesImport
+    }
+    '/companies/new/': {
+      id: '/companies/new/'
+      path: '/new'
+      fullPath: '/companies/new'
+      preLoaderRoute: typeof CompaniesNewIndexImport
+      parentRoute: typeof CompaniesImport
     }
   }
 }
@@ -150,11 +176,13 @@ export const routeTree = rootRoute.addChildren({
   CompaniesRoute: CompaniesRoute.addChildren({
     CompaniesIdRoute,
     CompaniesIndexRoute,
+    CompaniesNewIdRoute,
+    CompaniesNewIndexRoute,
   }),
   CreateRoute,
   DashbordRoute,
   AboutLazyRoute,
-  CampaniesIdNewRoute,
+  CampaniesNewRoute,
 })
 
 /* prettier-ignore-end */
@@ -171,7 +199,7 @@ export const routeTree = rootRoute.addChildren({
         "/create",
         "/dashbord",
         "/about",
-        "/campanies/$id/new"
+        "/campanies/new"
       ]
     },
     "/": {
@@ -184,7 +212,9 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "companies.tsx",
       "children": [
         "/companies/$id",
-        "/companies/"
+        "/companies/",
+        "/companies/new/$id",
+        "/companies/new/"
       ]
     },
     "/create": {
@@ -196,6 +226,9 @@ export const routeTree = rootRoute.addChildren({
     "/about": {
       "filePath": "about.lazy.tsx"
     },
+    "/campanies/new": {
+      "filePath": "campanies.new.tsx"
+    },
     "/companies/$id": {
       "filePath": "companies.$id.tsx",
       "parent": "/companies"
@@ -204,8 +237,13 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "companies.index.tsx",
       "parent": "/companies"
     },
-    "/campanies/$id/new": {
-      "filePath": "campanies.$id.new.tsx"
+    "/companies/new/$id": {
+      "filePath": "companies.new.$id.tsx",
+      "parent": "/companies"
+    },
+    "/companies/new/": {
+      "filePath": "companies.new.index.tsx",
+      "parent": "/companies"
     }
   }
 }

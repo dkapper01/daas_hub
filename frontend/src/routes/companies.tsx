@@ -18,7 +18,7 @@ function CompaniesComponent() {
         {(
           [
             [`/companies/${id}`, "Data", true],
-            [`/companies/${id}/new`, "New"],
+            [`/companies/new/${id}`, "New"],
           ] as const
         ).map(([to, label, exact]) => {
           return (
