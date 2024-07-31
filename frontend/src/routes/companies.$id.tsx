@@ -12,13 +12,6 @@ export const Route = createFileRoute("/companies/$id")({
   component: () => {
     const { name } = Route.useLoaderData();
 
-    return (
-      <div>
-        {name}
-        {/* add row button */}
-        <button className="bg-cyan-600">Add Row</button>
-        {/* <Outlet /> */}
-      </div>
-    );
+    return <div>{name}</div>;
   },
 });
