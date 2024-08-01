@@ -9,6 +9,7 @@ import { useQuery, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { fetchCompanies } from "../api/companies";
 import axios from "axios";
+import { Button } from "@/components/ui/button";
 
 const NotFoundComponent = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -72,10 +73,12 @@ function RootComponent() {
             ))}
           </div>
           <div className="flex-1 border-l">
+            <Button onClick={() => {}}>test</Button>
             <Outlet />
           </div>
         </div>
       </div>
+
       <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
       <TanStackRouterDevtools position="bottom-right" />
     </>
