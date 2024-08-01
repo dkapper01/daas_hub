@@ -8,6 +8,7 @@ import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { useQuery, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { fetchCompanies } from "../api/companies";
+import axios from "axios";
 
 const NotFoundComponent = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -27,7 +28,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootComponent() {
   const { data, error, isLoading } = useQuery<{ id: number; name: string }[]>({
-    queryKey: ["companies"],
+    queryKey: ["companiesrt"],
     queryFn: fetchCompanies,
   });
 
@@ -40,6 +41,7 @@ function RootComponent() {
   }
 
   const dataArray = data?.map((company) => {
+    // console.log(company);
     const { id, name } = company;
     return [id, name];
   });

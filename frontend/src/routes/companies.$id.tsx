@@ -10,8 +10,18 @@ export const Route = createFileRoute("/companies/$id")({
   },
 
   component: () => {
-    const { name } = Route.useLoaderData();
-
-    return <div>{name}</div>;
+    const { name, rows } = Route.useLoaderData();
+    return (
+      <>
+        <h1>{name}</h1>
+        <ul>
+          {rows.map((row: { id: number; name: string; url: string }) => (
+            <li key={row.id}>
+              {row.name} - {row.url}
+            </li>
+          ))}
+        </ul>
+      </>
+    );
   },
 });

@@ -19,9 +19,11 @@ import { Route as CompaniesImport } from './routes/companies'
 import { Route as layoutImport } from './routes/__layout'
 import { Route as IndexImport } from './routes/index'
 import { Route as CompaniesIndexImport } from './routes/companies.index'
+import { Route as CompaniesStatsImport } from './routes/companies.stats'
 import { Route as CompaniesIdImport } from './routes/companies.$id'
 import { Route as CampaniesNewImport } from './routes/campanies.new'
 import { Route as CompaniesNewIndexImport } from './routes/companies.new.index'
+import { Route as CompaniesStatsIdImport } from './routes/companies.stats.$id'
 import { Route as CompaniesNewIdImport } from './routes/companies.new.$id'
 
 // Create Virtual Routes
@@ -65,6 +67,11 @@ const CompaniesIndexRoute = CompaniesIndexImport.update({
   getParentRoute: () => CompaniesRoute,
 } as any)
 
+const CompaniesStatsRoute = CompaniesStatsImport.update({
+  path: '/stats',
+  getParentRoute: () => CompaniesRoute,
+} as any)
+
 const CompaniesIdRoute = CompaniesIdImport.update({
   path: '/$id',
   getParentRoute: () => CompaniesRoute,
@@ -78,6 +85,11 @@ const CampaniesNewRoute = CampaniesNewImport.update({
 const CompaniesNewIndexRoute = CompaniesNewIndexImport.update({
   path: '/new/',
   getParentRoute: () => CompaniesRoute,
+} as any)
+
+const CompaniesStatsIdRoute = CompaniesStatsIdImport.update({
+  path: '/$id',
+  getParentRoute: () => CompaniesStatsRoute,
 } as any)
 
 const CompaniesNewIdRoute = CompaniesNewIdImport.update({
@@ -145,6 +157,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CompaniesIdImport
       parentRoute: typeof CompaniesImport
     }
+    '/companies/stats': {
+      id: '/companies/stats'
+      path: '/stats'
+      fullPath: '/companies/stats'
+      preLoaderRoute: typeof CompaniesStatsImport
+      parentRoute: typeof CompaniesImport
+    }
     '/companies/': {
       id: '/companies/'
       path: '/'
@@ -158,6 +177,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/companies/new/$id'
       preLoaderRoute: typeof CompaniesNewIdImport
       parentRoute: typeof CompaniesImport
+    }
+    '/companies/stats/$id': {
+      id: '/companies/stats/$id'
+      path: '/$id'
+      fullPath: '/companies/stats/$id'
+      preLoaderRoute: typeof CompaniesStatsIdImport
+      parentRoute: typeof CompaniesStatsImport
     }
     '/companies/new/': {
       id: '/companies/new/'
@@ -175,6 +201,9 @@ export const routeTree = rootRoute.addChildren({
   IndexRoute,
   CompaniesRoute: CompaniesRoute.addChildren({
     CompaniesIdRoute,
+    CompaniesStatsRoute: CompaniesStatsRoute.addChildren({
+      CompaniesStatsIdRoute,
+    }),
     CompaniesIndexRoute,
     CompaniesNewIdRoute,
     CompaniesNewIndexRoute,
@@ -212,6 +241,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "companies.tsx",
       "children": [
         "/companies/$id",
+        "/companies/stats",
         "/companies/",
         "/companies/new/$id",
         "/companies/new/"
@@ -233,6 +263,13 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "companies.$id.tsx",
       "parent": "/companies"
     },
+    "/companies/stats": {
+      "filePath": "companies.stats.tsx",
+      "parent": "/companies",
+      "children": [
+        "/companies/stats/$id"
+      ]
+    },
     "/companies/": {
       "filePath": "companies.index.tsx",
       "parent": "/companies"
@@ -240,6 +277,10 @@ export const routeTree = rootRoute.addChildren({
     "/companies/new/$id": {
       "filePath": "companies.new.$id.tsx",
       "parent": "/companies"
+    },
+    "/companies/stats/$id": {
+      "filePath": "companies.stats.$id.tsx",
+      "parent": "/companies/stats"
     },
     "/companies/new/": {
       "filePath": "companies.new.index.tsx",

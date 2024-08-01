@@ -8,10 +8,7 @@ export async function fetchCompanies() {
 
 // fetch a single company
 export async function fetchCompany(id: string) {
-  console.log("fetchCompany", id);
-
   const response = await axios.get(`/api/companies/${id}`);
 
-  console.log("fetchCompany response", response);
   return response.data;
 }

@@ -15,15 +15,15 @@ datasource db {
 }
 
 model Company {
-  id    Int     @id @default(autoincrement())
-  name  String  @unique
-  rows  Row[]   // Establish a one-to-many relationship with Row
+  id    Int    @id @default(autoincrement())
+  name  String
+  rows  Row[]
 }
 
 model Row {
-  id        Int      @id @default(autoincrement())
-  name      String
-  url       String
-  companyId Int      // Foreign key to reference Company
-  company   Company  @relation(fields: [companyId], references: [id])
+  id         Int      @id @default(autoincrement())
+  name       String
+  url        String
+  companyId  Int
+  Company    Company  @relation(fields: [companyId], references: [id])
 }
